@@ -31,7 +31,21 @@ const promoterSchema = new Schema({
     type: String,
     default: "https://res.cloudinary.com/parkfinder/image/upload/v1619196200/users/avatar_lkjiqe.png"
   }
-})
+},
+{
+  timestamps: true,
+  toJSON: {
+    transform: (doc, ret) => {
+      ret.id = doc._id;
+      delete ret._id;
+      delete ret.__v;
+      delete ret.password;
+
+      return ret;
+    }
+  }
+}
+)
 
 const Promoter = mongoose.model('Promoter', promoterSchema);
 

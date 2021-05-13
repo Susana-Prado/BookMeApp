@@ -2,14 +2,63 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const User = require('../models/User.model');
+const Promoter = require('../models/Promoter.model')
+const Venue = require('../models/Venue.model')
 
 // Bcrypt config to encrypt passwords
 const bcrypt = require('bcryptjs');
 const uploader = require('../configs/cloudinary.config');
 const bcryptSalt = 10;
 
-router.post('/signup', (req, res, next) => {
-  const { username, email, password } = req.body;
+// router.post('/signup', (req, res, next) => {
+//   const { username, email, password } = req.body;
+
+//   if(password.length < 3){
+//     return res.status(400).json({ message: 'Please make your password at least 3 characters long'});
+//   }
+
+//   if(!username || !email){
+//     return res.status(400).json({ message: 'Please fill all the fields in the form'});
+//   }
+
+//   User.findOne({ email })
+//   .then(user => {
+//     if(user){
+//       return res.status(400).json({ message: 'User already exists. Please change your email'});
+//     }
+
+//     const salt = bcrypt.genSaltSync(bcryptSalt);
+//     const hashPass = bcrypt.hashSync(password, salt);
+
+//     User.create({
+//       username, 
+//       email, 
+//       password: hashPass
+//     })
+//     .then((newUser) => {
+//       // Passport req.login permite iniciar sesión tras crear el usuario
+//       req.login(newUser, (error) => {
+//         if(error){
+//           return res.status(500).json(error)
+//         }
+
+//         return res.status(200).json(newUser);
+//       })
+//     })
+//     .catch(error => res.status(500).json(error))
+//   })
+// })
+
+//Signup promoter
+router.post('/promoter',  uploader.single('image'), (req, res, next) => {
+  const { 
+    username, 
+    email, 
+    password,
+    CIF 
+  } = req.body;
+
+  const image = req.file.path;  
 
   if(password.length < 3){
     return res.status(400).json({ message: 'Please make your password at least 3 characters long'});
@@ -19,19 +68,105 @@ router.post('/signup', (req, res, next) => {
     return res.status(400).json({ message: 'Please fill all the fields in the form'});
   }
 
-  User.findOne({ email })
-  .then(user => {
-    if(user){
+  Promoter.findOne({ email })
+  .then(promoter => {
+    if(promoter){
       return res.status(400).json({ message: 'User already exists. Please change your email'});
     }
 
     const salt = bcrypt.genSaltSync(bcryptSalt);
     const hashPass = bcrypt.hashSync(password, salt);
 
-    User.create({
+    Promoter.create({
       username, 
       email, 
-      password: hashPass
+      address,
+      contactInfo,
+      password: hashPass,
+      CIF,
+      image
+    })
+    .then((newUser) => {
+      // Passport req.login permite iniciar sesión tras crear el usuario
+      req.login(newUser, (error) => {
+        if(error){
+          return res.status(500).json(error)
+        }
+
+        return res.status(200).json(newUser);
+      })
+    })
+    .catch(error => res.status(500).json(error))
+  })
+})
+
+//Signup venue
+router.post('/venue',  uploader.single('image'), (req, res, next) => {
+  const { 
+    username, 
+    email,
+    website,
+    location,
+    contactInfo, 
+    password,
+    CIF,
+    capacity,
+    rentingPrice,
+    rider,
+    conditions,
+    license,
+    merch,
+    security,
+    ticketOffice,
+    merch,
+    production,
+    technicians,
+    genre,
+    confirmed 
+  } = req.body;
+
+  const image = req.file.path;  
+
+  if(password.length < 3){
+    return res.status(400).json({ message: 'Please make your password at least 3 characters long'});
+  }
+
+  if(!username || !email){
+    return res.status(400).json({ message: 'Please fill all the fields in the form'});
+  }
+
+  Venue.findOne({ email })
+  .then(venue => {
+    if(venue){
+      return res.status(400).json({ message: 'User already exists. Please change your email'});
+    }
+
+    const salt = bcrypt.genSaltSync(bcryptSalt);
+    const hashPass = bcrypt.hashSync(password, salt);
+
+    Venue.create({
+      username, 
+      email, 
+      website,
+      location,
+      contactInfo,      
+      address,
+      password: hashPass,
+      CIF,
+      capacity,
+      rentingPrice,
+      image,
+      rider,
+      conditions,
+      license,
+      merch,
+      security,
+      ticketOffice,
+      production,
+      technicians,
+      genre,
+      confirmed,
+      date
     })
     .then((newUser) => {
       // Passport req.login permite iniciar sesión tras crear el usuario
