@@ -10,55 +10,21 @@ const bcrypt = require('bcryptjs');
 const uploader = require('../configs/cloudinary.config');
 const bcryptSalt = 10;
 
-// router.post('/signup', (req, res, next) => {
-//   const { username, email, password } = req.body;
-
-//   if(password.length < 3){
-//     return res.status(400).json({ message: 'Please make your password at least 3 characters long'});
-//   }
-
-//   if(!username || !email){
-//     return res.status(400).json({ message: 'Please fill all the fields in the form'});
-//   }
-
-//   User.findOne({ email })
-//   .then(user => {
-//     if(user){
-//       return res.status(400).json({ message: 'User already exists. Please change your email'});
-//     }
-
-//     const salt = bcrypt.genSaltSync(bcryptSalt);
-//     const hashPass = bcrypt.hashSync(password, salt);
-
-//     User.create({
-//       username, 
-//       email, 
-//       password: hashPass
-//     })
-//     .then((newUser) => {
-//       // Passport req.login permite iniciar sesión tras crear el usuario
-//       req.login(newUser, (error) => {
-//         if(error){
-//           return res.status(500).json(error)
-//         }
-
-//         return res.status(200).json(newUser);
-//       })
-//     })
-//     .catch(error => res.status(500).json(error))
-//   })
-// })
-
 //Signup promoter
-router.post('/promoter',  uploader.single('image'), (req, res, next) => {
+router.post('/signup-promoter',   (req, res, next) => {
+  console.log('probando ruta /signup-promoter')
   const { 
     username, 
     email, 
     password,
+    address,
+    contactInfo,
     CIF 
   } = req.body;
 
-  const image = req.file.path;  
+  
+  // const image = req.file.path; 
+  const image = undefined; 
 
   if(password.length < 3){
     return res.status(400).json({ message: 'Please make your password at least 3 characters long'});
@@ -86,22 +52,25 @@ router.post('/promoter',  uploader.single('image'), (req, res, next) => {
       CIF,
       image
     })
-    .then((newUser) => {
+    .then((newPromoter) => {
       // Passport req.login permite iniciar sesión tras crear el usuario
-      req.login(newUser, (error) => {
+      req.login(newPromoter, (error) => {
         if(error){
           return res.status(500).json(error)
         }
 
-        return res.status(200).json(newUser);
+        return res.status(200).json(newPromoter);
       })
     })
     .catch(error => res.status(500).json(error))
   })
 })
+ //TODO:FIXME:TODO:FIXME:
+//  uploader.single('image')
+
 
 //Signup venue
-router.post('/venue',  uploader.single('image'), (req, res, next) => {
+router.post('/signup-venue', (req, res, next) => {
   const { 
     username, 
     email,
@@ -117,15 +86,16 @@ router.post('/venue',  uploader.single('image'), (req, res, next) => {
     license,
     merch,
     security,
-    ticketOffice,
-    merch,
+    ticketOffice,    
     production,
     technicians,
     genre,
     confirmed 
   } = req.body;
 
-  const image = req.file.path;  
+  //TODO:FIXME:TODO:FIXME:
+  const image = undefined
+  // const image = req.file.path;  
 
   if(password.length < 3){
     return res.status(400).json({ message: 'Please make your password at least 3 characters long'});
@@ -168,21 +138,44 @@ router.post('/venue',  uploader.single('image'), (req, res, next) => {
       confirmed,
       date
     })
-    .then((newUser) => {
+    .then((newVenue) => {
       // Passport req.login permite iniciar sesión tras crear el usuario
-      req.login(newUser, (error) => {
+      req.login(newVenue, (error) => {
         if(error){
           return res.status(500).json(error)
         }
 
-        return res.status(200).json(newUser);
+        return res.status(200).json(newVenue);
       })
     })
     .catch(error => res.status(500).json(error))
   })
 })
 
-router.post('/login', (req, res, next) => {
+//login promoter
+router.post('/login-promoter', (req, res, next) =>{
+  passport.authenticate('local', (error, theUser, failureDetails) => {
+    if(error){
+      return res.status(500).json(error);
+    }
+
+    if(!theUser){
+      return res.status(401).json(failureDetails);
+    }
+
+    req.login(theUser, (error) => {
+      if(error){
+        return res.status(500).json(error);
+      }
+
+      return res.status(200).json(theUser);
+    })
+
+  })(req, res, next)
+})
+
+//login venue
+router.post('/login-venue', (req, res, next) =>{
   passport.authenticate('local', (error, theUser, failureDetails) => {
     if(error){
       return res.status(500).json(error);
