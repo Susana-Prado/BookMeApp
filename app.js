@@ -18,9 +18,20 @@ require('./configs/cors.config')(app);
 
 // Session config + Passport
 require('./configs/session.config')(app);
+require('./configs/passport.config')(app);
 
+
+//Routes
+const authRouter = require('./routes/auth.routes');
 const venueRouter = require('./routes/venues.routes');
+
+app.use('/api/auth', authRouter);
 app.use('/api/venues', venueRouter);
+
+
+app.use((req, res, next) => {
+  return res.status(404).json({ message: "Not found"});
+})
 
 
 module.exports = app;

@@ -9,6 +9,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/results', (req, res, next) => {
+  console.log('probando ruta');
   const { name, capacity, city, date } = req.body;
 
   if (!date) {
@@ -26,6 +27,7 @@ router.post('/results', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
+  console.log('probando ruta');
   const { id } = req.params;
   Venue.findOne({ _id: id })
     .then((venue) => res.status(200).json(venue))
@@ -33,6 +35,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.post('/:id/book', (req, res, next) => {
+  console.log('probando ruta');
   const { id } = req.params;
 
   Venue.updateOne(
