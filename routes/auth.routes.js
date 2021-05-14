@@ -1,53 +1,144 @@
 const express = require('express');
 const passport = require('passport');
-const router = express.Router();
-const User = require('../models/User.model');
-
-// Bcrypt config to encrypt passwords
+const router  = express.Router();
+const Promoter = require('../models/Promoter.model');
+const Venue = require('../models/Venue.model');
 const bcrypt = require('bcryptjs');
-const uploader = require('../configs/cloudinary.config');
 const bcryptSalt = 10;
 
-router.post('/signup', (req, res, next) => {
-  const { username, email, password } = req.body;
+router.post('/signup-promoter', (req, res, next) =>{
+  const { 
+    name, 
+    email, 
+    image,
+    password,
+    address,
+    contactInfo,
+    CIF 
+  } = req.body;
 
   if(password.length < 3){
     return res.status(400).json({ message: 'Please make your password at least 3 characters long'});
   }
 
-  if(!username || !email){
+  if(!name || !email){
     return res.status(400).json({ message: 'Please fill all the fields in the form'});
   }
 
-  User.findOne({ email })
-  .then(user => {
-    if(user){
+  Promoter.findOne({ email })
+  .then(promoter => {
+    if(promoter){
       return res.status(400).json({ message: 'User already exists. Please change your email'});
     }
 
     const salt = bcrypt.genSaltSync(bcryptSalt);
     const hashPass = bcrypt.hashSync(password, salt);
 
-    User.create({
-      username, 
+    Promoter.create({
+      name, 
       email, 
-      password: hashPass
+      address,
+      contactInfo,
+      password: hashPass,
+      CIF,
+      image
     })
-    .then((newUser) => {
+    .then((newPromoter) => {
       // Passport req.login permite iniciar sesión tras crear el usuario
-      req.login(newUser, (error) => {
+      req.login(newPromoter, (error) => {
         if(error){
           return res.status(500).json(error)
         }
 
-        return res.status(200).json(newUser);
+        return res.status(200).json(newPromoter);
       })
     })
     .catch(error => res.status(500).json(error))
   })
 })
 
-router.post('/login', (req, res, next) => {
+router.post('/signup-venue', (req, res, next) => {
+  const { 
+    name, 
+    email,
+    website,
+    location,
+    address,
+    image,
+    contactInfo, 
+    password,
+    CIF,
+    capacity,
+    rentingPrice,
+    rider,
+    conditions,
+    license,
+    merch,
+    security,
+    ticketOffice,    
+    production,
+    technicians,
+    genre,
+    confirmed,
+    date
+  } = req.body;
+  if(password.length < 3){
+    return res.status(400).json({ message: 'Please make your password at least 3 characters long'});
+  }
+
+  if(!name || !email){
+    return res.status(400).json({ message: 'Please fill all the fields in the form'});
+  }
+
+  Venue.findOne({ email })
+  .then(venue => {
+    if(venue){
+      return res.status(400).json({ message: 'User already exists. Please change your email'});
+    }
+
+    const salt = bcrypt.genSaltSync(bcryptSalt);
+    const hashPass = bcrypt.hashSync(password, salt);
+
+    Venue.create({
+      name, 
+      email, 
+      website,
+      location,
+      contactInfo,      
+      address,
+      password: hashPass,
+      CIF,
+      capacity,
+      rentingPrice,
+      image,
+      rider,
+      conditions,
+      license,
+      merch,
+      security,
+      ticketOffice,
+      production,
+      technicians,
+      genre,
+      confirmed,
+      date
+    })
+    .then((newVenue) => {
+      // Passport req.login permite iniciar sesión tras crear el usuario
+      req.login(newVenue, (error) => {
+        if(error){
+          return res.status(500).json(error)
+        }
+
+        return res.status(200).json(newVenue);
+      })
+    })
+    .catch(error => res.status(500).json(error))
+  })
+})
+
+
+router.post('/login', (req, res, next) =>{
   passport.authenticate('local', (error, theUser, failureDetails) => {
     if(error){
       return res.status(500).json(error);
@@ -58,6 +149,7 @@ router.post('/login', (req, res, next) => {
     }
 
     req.login(theUser, (error) => {
+      console.log(theUser)
       if(error){
         return res.status(500).json(error);
       }
@@ -68,18 +160,12 @@ router.post('/login', (req, res, next) => {
   })(req, res, next)
 })
 
+
 router.post('/logout', (req, res, next) => {
-  // req.logout is defined by passport
   req.logout();
   return res.status(200).json({ message: 'Log out success!'});
 })
 
-router.put('/edit', uploader.single('photo'), (req, res, next) => {
-  console.log(req.file);
-  User.findOneAndUpdate({ _id: req.user.id }, { ...req.body, photo: req.file ? req.file.path : req.user.photo }, { new: true })
-  .then(user => res.status(200).json(user))
-  .catch(error => res.status(500).json(error))
-})
 
 router.get('/loggedin', (req, res, next) => {
   // req.isAuthenticated & req.user are defined by passport
@@ -89,5 +175,6 @@ router.get('/loggedin', (req, res, next) => {
     return res.status(403).json({ message: 'Forbbiden' });
   }
 })
+
 
 module.exports = router;
