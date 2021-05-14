@@ -23,10 +23,12 @@ require('./configs/passport.config')(app);
 
 //Routes
 const authRouter = require('./routes/auth.routes');
-const venueRouter = require('./routes/venues.routes');
+const reservationRouter = require('./routes/reservation.routes');
+const privateRouter = require('./routes/private.routes');
 
 app.use('/api/auth', authRouter);
-app.use('/api/venues', venueRouter);
+app.use('/api/reservation', reservationRouter);
+app.use('/api/private', privateRouter);
 
 
 app.use((req, res, next) => {

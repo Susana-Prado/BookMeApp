@@ -2,13 +2,13 @@ const express = require('express');
 const Venue = require('../models/Venue.model');
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
+router.get('/search', (req, res, next) => {
   Venue.find()
     .then((venues) => res.status(200).json(venues))
     .catch((err) => res.status(500).json(err));
 });
 
-router.post('/results', (req, res, next) => {
+router.post('/search', (req, res, next) => {
   console.log('probando ruta');
   const { name, capacity, city, date } = req.body;
 
@@ -26,15 +26,14 @@ router.post('/results', (req, res, next) => {
     .catch((err) => res.status(500).json(err));
 });
 
-router.get('/:id', (req, res, next) => {
-  console.log('probando ruta');
+router.get('/venue/:id', (req, res, next) => {
   const { id } = req.params;
-  Venue.findOne({ _id: id })
+  Venue.findOne({ _id: id , user: req.user.id})
     .then((venue) => res.status(200).json(venue))
     .catch((err) => res.status(500).json(err));
 });
 
-router.post('/:id/book', (req, res, next) => {
+router.post('/venue/:id/book', (req, res, next) => {
   console.log('probando ruta');
   const { id } = req.params;
 
@@ -55,5 +54,20 @@ router.post('/:id/book', (req, res, next) => {
       .catch((err) => res.status(500).json(err));
   });
 });
+
+router.put('/booking/:id', (req, res, next) => {
+  const { id } = req.params;
+  Booking.findOneAndUpdate({ _id: id, user: req.user.id }, req.body, { new: true })
+    .then((booking) => res.status(200).json(bookimg))
+    .catch((err) => res.status(500).json(err));
+});
+
+
+router.delete('/booking/:id', (req, res, next) => {
+  const { id } = req.params;
+  Booking.findOneAndRemove({ _id: id, user: req.user.id})
+  .then(() => res.status(200).json({ message: `Booking ${id} deleted`}))
+  .catch(err => res.status(500).json(err))
+})
 
 module.exports = router;

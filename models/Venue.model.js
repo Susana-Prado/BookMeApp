@@ -22,7 +22,7 @@ const venueSchema = new Schema({
   CIF: {type: String, required: true},
   capacity: {type: Number, required: true},
   rentingPrice: {type: Number},
-  image:{type: String, required: true},
+  image:{type: String, default: '' },
   rider: {type: String, required: true},
   conditions: {type: String, required: true},
   license: {type: String, required: true},  
