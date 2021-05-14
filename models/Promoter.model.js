@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const promoterSchema = new Schema({
   name: {type: String, required: true, unique: true},
   email: {type: String, required: true, unique: true},
+  image: {type: String},
   address: {
             street: String,
             number: Number,

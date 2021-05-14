@@ -7,24 +7,18 @@ const uploader = require('../configs/cloudinary.config');
 const passport = require('passport');
 const { isLoggedIn } = require('../configs/middlewares/auth');
 
-function DDMMYYYY(date) {
-  const d = new Date(date);
-  return `${date.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
-}
 
-router.get('/profile-promoter', isLoggedIn, (req, res) => {
+router.get('/profile-promoter',  (req, res) => {
   Promoter.findById({ _id: req.user.id })
-  .then((user) => {
-    Booking.find({
-    }).populate('venue')
-    
+  .populate('bookings')
+  .then((user) => {   
     res.status(200).json(user);
   });
 });
 
-router.get('/profile-venue', isLoggedIn, (req, res) => {
+router.get('/profile-venue', (req, res) => {
   Venue.findById({ _id: req.user.id })
-    .populate('booking')
+    .populate('bookings')
     .then((user) => {
       res.status(200).json(user);
     });
@@ -55,7 +49,7 @@ router.put(
   }
 );
 
-router.delete('/delete-promoter', isLoggedIn, (req, res, next) => {
+router.delete('/delete-promoter', isLoggedIn, uploader.single('image'), (req, res, next) => {
   Promoter.findByIdAndRemove(req.user.id)
     .then(() => res.status(200).json({ message: 'User removed' }))
     .catch((error) => res.status(500).json(error));

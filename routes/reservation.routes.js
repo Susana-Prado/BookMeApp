@@ -1,6 +1,8 @@
 const express = require('express');
-const Venue = require('../models/Venue.model');
 const router = express.Router();
+const Venue = require('../models/Venue.model');
+const Booking = require('../models/Booking.model');
+const Promoter = require('../models/Promoter.model');
 
 router.get('/search', (req, res, next) => {
   Venue.find()
@@ -28,37 +30,35 @@ router.post('/search', (req, res, next) => {
 
 router.get('/venue/:id', (req, res, next) => {
   const { id } = req.params;
-  Venue.findOne({ _id: id , user: req.user.id})
+  Venue.findOne({ _id: id})
     .then((venue) => res.status(200).json(venue))
     .catch((err) => res.status(500).json(err));
 });
 
-router.post('/venue/:id/book', (req, res, next) => {
-  console.log('probando ruta');
-  const { id } = req.params;
+// router.post('/venue/:id/book', (req, res, next) => {
+//   console.log('probando ruta');
+//   const { id } = req.params;
+//   const {name, city, calendar} = req.body;
 
-  Venue.updateOne(
-    { _id: id },
-    { $addToSet: { date: req.session.resultsDate } },
-    { new: true }
-  ).then(() => {
-    Booking.create({
-      promoter: req.session.currentUser._id,
-      venue: id,
-      date: req.session.resultsDate,
-      bookingDate: Date.now(),
-    })
-      .then((reservation) => {
-        res.status(200).json(reservation);
-      })
-      .catch((err) => res.status(500).json(err));
-  });
-});
+//   Booking.create({
+//       promoter: req.session.currentUser._id,
+//       venue: id,
+//       date: req.body.calendar
+//       bookingDate: Date.now(),
+//   })
+//   .then((newBooking) => {
+//     Venue.updateOne({_id: id}, push {new: true})
+//     .then (update prom)
+//     res.status(200).json(newBooking)
+
+//   })
+ 
+// });
 
 router.put('/booking/:id', (req, res, next) => {
   const { id } = req.params;
   Booking.findOneAndUpdate({ _id: id, user: req.user.id }, req.body, { new: true })
-    .then((booking) => res.status(200).json(bookimg))
+    .then((booking) => res.status(200).json(booking))
     .catch((err) => res.status(500).json(err));
 });
 

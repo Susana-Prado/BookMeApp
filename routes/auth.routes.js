@@ -3,7 +3,6 @@ const passport = require('passport');
 const router  = express.Router();
 const Promoter = require('../models/Promoter.model');
 const Venue = require('../models/Venue.model');
-
 const bcrypt = require('bcryptjs');
 const bcryptSalt = 10;
 
@@ -11,6 +10,7 @@ router.post('/signup-promoter', (req, res, next) =>{
   const { 
     name, 
     email, 
+    image,
     password,
     address,
     contactInfo,
@@ -63,6 +63,8 @@ router.post('/signup-venue', (req, res, next) => {
     email,
     website,
     location,
+    address,
+    image,
     contactInfo, 
     password,
     CIF,
@@ -77,7 +79,8 @@ router.post('/signup-venue', (req, res, next) => {
     production,
     technicians,
     genre,
-    confirmed 
+    confirmed,
+    date
   } = req.body;
   if(password.length < 3){
     return res.status(400).json({ message: 'Please make your password at least 3 characters long'});
@@ -146,6 +149,7 @@ router.post('/login', (req, res, next) =>{
     }
 
     req.login(theUser, (error) => {
+      console.log(theUser)
       if(error){
         return res.status(500).json(error);
       }
