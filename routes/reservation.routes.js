@@ -14,12 +14,24 @@ router.get('/search', (req, res, next) => {
 router.post('/search', (req, res, next) => {
   const { name, capacity, city, date } = req.body;
 
-  if (!date) {
-    return res.status(400).json({ message: 'Date is required' });
+  const filterObject = {};
+  if (name) {
+    filterObject.name = name;
+  }
+  if (city  !=='---') {
+    filterObject.adress.city = city;
+  }
+  if (capacity !=='---') {
+    const lowerCap = parseInt(capacity.split('-')[0]);
+    const higherCap = parseInt(capacity.split('-')[1]);
+    filterObject.capacity = { $gte: lowerCap, $lte: higherCap };
   }
 
-  const filterObject = {};
-  filterObject.date = { $nin: [date] };
+  if (!date) {
+    return res.status(400).json({ message: 'Date is required' });
+  } else {
+    filterObject.date = { $nin: [date] };
+  }
 
   Venue.find(filterObject)
     .then((results) => {
@@ -41,7 +53,7 @@ router.post('/venue/:id/book', (req, res, next) => {
 
   Venue.findById(id)
     .then((venue) => {
-      console.log(venue.date)
+      console.log(venue.date);
       if (venue.date.map(Number).includes(+new Date(date))) {
         return res.status(500).json({ message: 'Not available' });
       } else {
@@ -54,7 +66,10 @@ router.post('/venue/:id/book', (req, res, next) => {
           .then((newBooking) => {
             Venue.updateOne(
               { _id: id },
-              { $push: { bookings: newBooking.id }, $push: {date: newBooking.date} },
+              {
+                $push: { bookings: newBooking.id },
+                $push: { date: newBooking.date },
+              },
               { new: true }
             )
               .then(() => {
@@ -78,7 +93,7 @@ router.post('/venue/:id/book', (req, res, next) => {
 
 router.put('/booking/:id', (req, res, next) => {
   const { id } = req.params;
-  Booking.findOneAndUpdate({ _id: id}, req.body, {
+  Booking.findOneAndUpdate({ _id: id }, req.body, {
     new: true,
   })
     .then((booking) => res.status(200).json(booking))

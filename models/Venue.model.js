@@ -5,6 +5,11 @@ const venueSchema = new Schema({
   name: {type: String, required: true, unique: true},
   email: {type: String, required: true, unique: true},
   website: {type: String},
+  address: {
+    street: String,
+    city: String, enum: ["Barcelona", "Madrid", "Bilbao"],
+    country: String
+  },
   location: {
     type: {
       type: String, 
