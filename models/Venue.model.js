@@ -29,11 +29,10 @@ const venueSchema = new Schema({
   date: [{type: Date}],
   merch: {type: Boolean},
   security: {type: Boolean},
-  ticketOffice: {type: Boolean},
-  merch: {type: Boolean},
+  ticketOffice: {type: Boolean},  
   production: {type: Boolean},
   technicians: {type: Boolean},
-  genre: { type: String, enum: [ "All", "Metal/Rock/Punk/Alternative", "Blues/Rock", "HipHop/Rap", "Jazz", 		"R&B/Soul", "Latin", "Folk/Acoustic", "Electronic", "Experimental" ] },
+  genre: { type: String, enum: [ "All", "Metal/Rock/Punk/Alternative", "Blues/Rock", "HipHop/Rap", "Jazz", "R&B/Soul", "Latin", "Folk/Acoustic", "Electronic", "Experimental" ] },
   bookings:  [{type: Schema.Types.ObjectId, ref: 'Booking'}]
 },{
   timestamps: true,
