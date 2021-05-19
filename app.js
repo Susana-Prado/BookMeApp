@@ -26,6 +26,7 @@ const authRouter = require('./routes/auth.routes');
 const reservationRouter = require('./routes/reservation.routes');
 const privateRouter = require('./routes/private.routes');
 
+
 app.use('/api/auth', authRouter);
 app.use('/api/reservation', reservationRouter);
 app.use('/api/private', privateRouter);
