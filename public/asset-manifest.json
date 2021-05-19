@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/static/css/main.4613e4e1.chunk.css",
+    "main.js": "/static/js/main.320deb5d.chunk.js",
+    "main.js.map": "/static/js/main.320deb5d.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.5ac05e4b.js",
+    "runtime-main.js.map": "/static/js/runtime-main.5ac05e4b.js.map",
+    "static/css/2.61b4cb56.chunk.css": "/static/css/2.61b4cb56.chunk.css",
+    "static/js/2.6d754ec0.chunk.js": "/static/js/2.6d754ec0.chunk.js",
+    "static/js/2.6d754ec0.chunk.js.map": "/static/js/2.6d754ec0.chunk.js.map",
+    "static/js/3.dec6ba1d.chunk.js": "/static/js/3.dec6ba1d.chunk.js",
+    "static/js/3.dec6ba1d.chunk.js.map": "/static/js/3.dec6ba1d.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.61b4cb56.chunk.css.map": "/static/css/2.61b4cb56.chunk.css.map",
+    "static/css/main.4613e4e1.chunk.css.map": "/static/css/main.4613e4e1.chunk.css.map",
+    "static/js/2.6d754ec0.chunk.js.LICENSE.txt": "/static/js/2.6d754ec0.chunk.js.LICENSE.txt",
+    "static/media/calendar.68e6201d.jpg": "/static/media/calendar.68e6201d.jpg",
+    "static/media/error404.e1322b48.png": "/static/media/error404.e1322b48.png",
+    "static/media/logo_test03.jpeg.91f6ed05.jpg": "/static/media/logo_test03.jpeg.91f6ed05.jpg",
+    "static/media/HomePage.css": "/static/media/pexels-vishnu-r-nair-1105666.279d52b7.jpg",
+    "static/media/pngfind.com-music-icon-png-3250821.32e07a72.png": "/static/media/pngfind.com-music-icon-png-3250821.32e07a72.png",
+    "static/media/promoter.7fa55c64.png": "/static/media/promoter.7fa55c64.png",
+    "static/media/rock-music-icon-11.jpg.f37138ec.png": "/static/media/rock-music-icon-11.jpg.f37138ec.png",
+    "static/media/venue.c6aeb049.png": "/static/media/venue.c6aeb049.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5ac05e4b.js",
+    "static/css/2.61b4cb56.chunk.css",
+    "static/js/2.6d754ec0.chunk.js",
+    "static/css/main.4613e4e1.chunk.css",
+    "static/js/main.320deb5d.chunk.js"
+  ]
+}
