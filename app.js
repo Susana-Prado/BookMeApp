@@ -31,6 +31,9 @@ app.use('/api/auth', authRouter);
 app.use('/api/reservation', reservationRouter);
 app.use('/api/private', privateRouter);
 
+app.use((req, res, next) => {
+  res.sendFile(__dirname + "/public/index.html");
+});
 
 app.use((req, res, next) => {
   return res.status(404).json({ message: "Not found"});
