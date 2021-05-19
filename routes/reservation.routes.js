@@ -100,10 +100,31 @@ router.put('/booking/:id', (req, res, next) => {
     .then((booking) => res.status(200).json(booking))
     .catch((err) => res.status(500).json(err));
 });
+
+
 router.delete('/booking/:id', (req, res, next) => {
   const { id } = req.params;
   Booking.findOneAndDelete({ _id: id })
-    .then(() => res.status(200).json({ message: `Booking ${id} deleted` }))
+    .then((booking) => {
+      Venue.updateOne(
+        {_id: id},
+        { $pull: { bookings: booking.id, date: booking.date}},
+        { new: true }
+      )
+      .then(() => {
+        Promoter.updateOne(
+          { _id: req.user.id },
+          { $pull: { bookings: booking.id } },
+          { new: true }
+        )
+        .then(() => {
+          res.status(200).json({ message: `Booking ${id} deleted` })
+        })
+        .catch((err) => res.status(500).json(err));
+      })
+      .catch((err) => res.status(500).json(err));
+    })
     .catch((err) => res.status(500).json(err));
-});
+})
+
 module.exports = router;
