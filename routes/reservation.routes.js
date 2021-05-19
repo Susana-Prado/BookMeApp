@@ -8,6 +8,8 @@ function addDays(date, days) {
   result.setDate(result.getDate() + days);
   return result;
 }
+
+
 router.get('/search', (req, res, next) => {
   Venue.find()
     .populate('bookings')

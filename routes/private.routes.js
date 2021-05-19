@@ -7,18 +7,23 @@ const uploader = require('../configs/cloudinary.config');
 const passport = require('passport');
 const { isLoggedIn } = require('../configs/middlewares/auth');
 
-
-router.get('/profile-promoter',  (req, res) => {
+router.get('/profile-promoter', (req, res) => {
   Promoter.findById({ _id: req.user.id })
-  .populate('bookings')
-  .then((user) => {   
-    res.status(200).json(user);
-  });
+    .populate({
+      path: 'bookings',
+      populate: [{ path: 'venue' }, { path: 'promoter' }],
+    })
+    .then((user) => {
+      res.status(200).json(user);
+    });
 });
 
 router.get('/profile-venue', (req, res) => {
   Venue.findById({ _id: req.user.id })
-    .populate('bookings')
+    .populate({
+      path: 'bookings',
+      populate: [{ path: 'venue' }, { path: 'promoter' }],
+    })
     .then((user) => {
       res.status(200).json(user);
     });
@@ -49,11 +54,16 @@ router.put(
   }
 );
 
-router.delete('/delete-promoter', isLoggedIn, uploader.single('image'), (req, res, next) => {
-  Promoter.findByIdAndRemove(req.user.id)
-    .then(() => res.status(200).json({ message: 'User removed' }))
-    .catch((error) => res.status(500).json(error));
-});
+router.delete(
+  '/delete-promoter',
+  isLoggedIn,
+  uploader.single('image'),
+  (req, res, next) => {
+    Promoter.findByIdAndRemove(req.user.id)
+      .then(() => res.status(200).json({ message: 'User removed' }))
+      .catch((error) => res.status(500).json(error));
+  }
+);
 
 router.delete('/delete-venue', isLoggedIn, (req, res, next) => {
   Venue.findByIdAndRemove(req.user.id)
