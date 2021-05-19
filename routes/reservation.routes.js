@@ -62,21 +62,23 @@ router.post('/venue/:id/book', (req, res, next) => {
           bookingDate: Date.now(),
         })
           .then((newBooking) => {
+            console.log(newBooking)
             Venue.updateOne(
               { _id: id },
               {
-                $push: { bookings: newBooking.id },
-                $push: { date: newBooking.date },
+                $push: { bookings: newBooking.id, date: newBooking.date},
               },
               { new: true }
             )
-              .then(() => {
+              .then((updatedVenue) => {
+                console.log(updatedVenue)
                 Promoter.updateOne(
                   { _id: req.user.id },
                   { $push: { bookings: newBooking.id } },
                   { new: true }
                 )
-                  .then(() => {
+                  .then((updatedPromoter) => {
+                    console.log(updatedPromoter)
                     res.status(200).json(newBooking);
                   })
                   .catch((err) => res.status(500).json(err));
