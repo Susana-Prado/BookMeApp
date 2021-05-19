@@ -4,6 +4,12 @@ const Venue = require('../models/Venue.model');
 const Booking = require('../models/Booking.model');
 const Promoter = require('../models/Promoter.model');
 
+function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
 router.get('/search', (req, res, next) => {
   Venue.find()
     .populate('bookings')
@@ -27,11 +33,15 @@ router.post('/search', (req, res, next) => {
     filterObject.capacity = { $gte: lowerCap, $lte: higherCap };
   }
 
+  
+  
   if (!date) {
     return res.status(400).json({ message: 'Date is required' });
   } else {
-    filterObject.date = { $nin: [date] };
+    filterObject.date = { $not: {$elemMatch: {$gte: new Date(date), $lt:addDays(new Date(date),1)}}};
   }
+ 
+ 
 
   Venue.find(filterObject)
     .then((results) => {
@@ -50,17 +60,18 @@ router.get('/venue/:id', (req, res, next) => {
 router.post('/venue/:id/book', (req, res, next) => {
   const { id } = req.params;
   const { date } = req.body;
+  const dateFixed = addDays(new Date(date),1)
 
   Venue.findById(id)
     .then((venue) => {
       console.log(venue.date);
-      if (venue.date.map(Number).includes(+new Date(date))) {
+      if (venue.date.map(Number).includes(+new Date(dateFixed))) {
         return res.status(500).json({ message: 'Not available' });
       } else {
         Booking.create({
           promoter: req.user.id,
           venue: id,
-          date: date,
+          date: dateFixed,
           bookingDate: Date.now(),
         })
           .then((newBooking) => {
