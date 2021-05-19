@@ -27,7 +27,7 @@ const venueSchema = new Schema({
   CIF: {type: String, required: true},
   capacity: {type: Number, required: true},
   rentingPrice: {type: Number},
-  image:{type: String, default: '' },
+  image:{type: String, default: "https://res.cloudinary.com/de29zftcu/image/upload/v1621440532/bookmeapp/venueavatar_zqoy1l.jpg" },
   rider: {type: String, required: true},
   conditions: {type: String, required: true},
   license: {type: String, required: true},  

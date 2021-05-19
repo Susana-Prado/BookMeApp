@@ -34,11 +34,7 @@ router.put('/edit-promoter', isLoggedIn, (req, res, next) => {
     .catch((error) => res.status(500).json(error));
 });
 
-router.put(
-  '/edit-venue',
-  isLoggedIn,
-  uploader.single('image'),
-  (req, res, next) => {
+router.put('/edit-venue', isLoggedIn, uploader.single('image'),(req, res, next) => {
     Venue.findOneAndUpdate(
       { _id: req.user.id },
       { ...req.body, image: req.file ? req.file.path : req.user.image },
@@ -49,7 +45,7 @@ router.put(
   }
 );
 
-router.delete('/delete-promoter', isLoggedIn, uploader.single('image'), (req, res, next) => {
+router.delete('/delete-promoter', isLoggedIn, (req, res, next) => {
   Promoter.findByIdAndRemove(req.user.id)
     .then(() => res.status(200).json({ message: 'User removed' }))
     .catch((error) => res.status(500).json(error));
