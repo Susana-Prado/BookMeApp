@@ -60,34 +60,6 @@ router.post('/signup-promoter', (req, res, next) =>{
 //  uploader.single('image')
 
 
-//Signup venue
-router.post('/signup-venue', (req, res, next) => {
-  const { 
-    username, 
-    email,
-    website,
-    location,
-    contactInfo, 
-    password,
-    CIF,
-    capacity,
-    rentingPrice,
-    rider,
-    conditions,
-    license,
-    merch,
-    security,
-    ticketOffice,    
-    production,
-    technicians,
-    genre,
-    confirmed 
-  } = req.body;
-
-  //TODO:FIXME:TODO:FIXME:
-  const image = undefined
-  // const image = req.file.path;  
-
 router.post('/signup-venue', (req, res, next) => {
   const { 
     name, 
