@@ -104,16 +104,17 @@ router.put('/booking/:id', (req, res, next) => {
 
 router.delete('/booking/:id', (req, res, next) => {
   const { id } = req.params;
+  console.log(id);
   Booking.findOneAndDelete({ _id: id })
     .then((booking) => {
-      Venue.updateOne(
-        {_id: id},
+      Venue.updateMany(
+        {},
         { $pull: { bookings: booking.id, date: booking.date}},
         { new: true }
       )
       .then(() => {
-        Promoter.updateOne(
-          { _id: req.user.id },
+        Promoter.updateMany(
+          {},
           { $pull: { bookings: booking.id } },
           { new: true }
         )
