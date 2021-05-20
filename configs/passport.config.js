@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const Venue = require('../models/Venue.model');
-const Promoter = require('../models/Promoter.model');
+const Promoter = require ('../models/Promoter.model');
+const Venue = require ('../models/Venue.model');
 const bcrypt = require('bcryptjs');
 
 module.exports = (app) => {

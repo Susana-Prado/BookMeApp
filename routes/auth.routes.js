@@ -56,6 +56,9 @@ router.post('/signup-promoter', (req, res, next) =>{
     .catch(error => res.status(500).json(error))
   })
 })
+ //TODO:FIXME:TODO:FIXME:
+//  uploader.single('image')
+
 
 router.post('/signup-venue', (req, res, next) => {
   const { 
