@@ -1,4 +1,8 @@
 # M3 - BookMeApp
+<<<<<<< HEAD
+=======
+
+>>>>>>> 774b883a4d87372de9325c950d9c95f10fccdf89
 <br>
 
 ## Description
@@ -116,7 +120,7 @@ Promoter model
 {
   name: {type: String, required: true, unique: true},
   email: {type: String, required: true, unique: true},
-  adress: {
+  address: {
             street: String,
             number: Number
             city: String,
@@ -136,7 +140,7 @@ Promoter model
 
 Venue model 
 
-```javascript
+```
 name: {type: String, required: true, unique: true},
 email: {type: String, required: true, unique: true},
 website: {type: String},
@@ -169,8 +173,8 @@ location: {
   production: {type: Boolean},
   technicians: {type: Boolean},
   genre: { type: String, enum: [ "All", "Metal/Rock/Punk/Alternative", "Blues/Rock", "HipHop/Rap", "Jazz", 		"R&B/Soul", "Latin", "Folk/Acoustic", "Electronic", "Experimental" ] },
-  available: {type: boolean},
-  bookings:  [{type: Schema.Types.ObjectId, ref: 'Booking'}
+  confirmed: {type:boolean, default: false},
+   Bookings:  [{type: Schema.Types.ObjectId, ref: 'Booking'}
 ```
 
 
@@ -214,31 +218,27 @@ Booking model
 
 
 
-|            |                                     |                                                              |                |              |                        |
-| ---------- | ----------------------------------- | ------------------------------------------------------------ | -------------- | ------------ | ---------------------- |
-| **Method** | **Route**                           | **Description**                                              | Success status | Error status | Request - Body         |
-| `GET`      | `/`                                 | Main page route.                                             |                |              |                        |
-| `GET`      | `auth/login`                        | Renders `login` form view.                                   |                |              |                        |
-| `POST`     | `auth//login`                       | Sends Login form data to the server.                         | 200            | 401          | { email, password }    |
-| `GET`      | `auth/signup`                       | Renders `signup` options.                                    | 201            | 404          |                        |
-| `GET`      | `auth/signup-promoter`              | Renders `signup` form view for promoter.                     | 201            | 404          |                        |
-| `POST`     | `auth/signup-promoter`              | Sends Sign Up info to the server and creates promoter user in the DB. | 201            | 404          | { email, password }    |
-| `GET`      | `auth/signup-venue`                 | Sign up page for venues.                                     | 201            | 404          |                        |
-| `POST`     | `auth/signup-venue`                 | Sends Sign Up info to the server and creates  venue user in the DB. | 201            | 404          | { email, password }    |
-| `GET`      | `/private/promoterprofile`          | Shows promoter profile details with bookings                 |                |              |                        |
-| `GET`      | `/private/edit-promoterprofile`     | Private route. Shows`edit-promoter profile` form.            |                |              |                        |
-| `PUT`      | `/private/edit-promoterprofile`     | Private route. Sends edit-profile info to server and updates promoter user in DB. | 200            | 400          | JSON                   |
-| `DELETE`   | ``/private/delete-promoterprofile`` | Delete profile                                               | 201            | 400          | {id}                   |
-| `GET`      | `/private/venueprofile`             | Shows venue profile details with calendar avails             |                |              |                        |
-| `GET`      | `/private/edit-venueprofile`        | Private route. Shows `edit-profile -owner` form.             |                |              |                        |
-| `PUT`      | `/private/edit-venueprofile`        | Private route. Sends edit-profile info to server and updates user in DB. | 200            | 400          | JSON                   |
-| `DELETE`   | ``/private/delete-venueprofile``    | Delete venue                                                 | 201            | 400          | {id}                   |
-| `POST`     | `/private/logout`                   | Logs out the user                                            | 204            | 400          |                        |
-| `GET`      | `/search`                           | Shows search form                                            | 200            | 400          |                        |
-| `POST`     | `/search`                           | Shows venue's results                                        |                |              | {city, capacity, date} |
-| `GET`      | `api/venues`                        | Shows venue's list.                                          |                |              |                        |
-| `GET`      | `api/venues/:id`                    | Shows particular venue's details.                            |                |              |                        |
-| `POST`     | `api/venues/:id`                    | Book venue. create new booking                               | 200            | 404          | JSON                   |
+|            |                                     |                                                              |                |              |                                              |
+| ---------- | ----------------------------------- | ------------------------------------------------------------ | -------------- | ------------ | -------------------------------------------- |
+| **Method** | **Route**                           | **Description**                                              | Success status | Error status | Request - Body                               |
+| `GET`      | `/`                                 | Main page route.                                             |                |              |                                              |
+| `GET`      | `/login`                            | Renders `login` form view.                                   |                |              |                                              |
+| `POST`     | `/login`                            | Sends Login form data to the server.                         | 200            | 401          | { email, password }                          |
+| `GET`      | `/signup`                           | Renders `signup` options.                                    | 201            | 404          |                                              |
+| `GET`      | `/signup-promoter`                  | Renders `signup` form view for promoter.                     | 201            | 404          |                                              |
+| `POST`     | `/signup-promoter`                  | Sends Sign Up info to the server and creates promoter user in the DB. | 201            | 404          | { email, password }                          |
+| `GET`      | `/signup-venue`                     | Sign up page for venues.                                     | 201            | 404          |                                              |
+| `POST`     | `/signup-venue`                     | Sends Sign Up info to the server and creates  venue user in the DB. | 201            | 404          | { email, password }                          |
+| `GET`      | `/private/edit-promoterprofile`     | Private route. Shows`edit-promoter profile` form.            |                |              |                                              |
+| `PUT`      | `/private/edit-promoterprofile`     | Private route. Sends edit-profile info to server and updates promoter user in DB. | 200            | 400          | { email, password, name, contact, CIF }      |
+| `DELETE`   | ``/private/delete-promoterprofile`` | {id}                                                         | 201            | 400          | delete promoter                              |
+| `GET`      | `/private/edit-venueprofile`        | Private route. Shows `edit-profile -owner` form.             |                |              |                                              |
+| `PUT`      | `/private/edit-venueprofile`        | Private route. Sends edit-profile info to server and updates user in DB. | 200            | 400          | { email, password, name, contact, image... } |
+| `DELETE`   | ``/private/delete-venueprofile``    | Delete venue                                                 | 201            | 400          | {id}                                         |
+| `POST`     | `/private/logout`                   | Logs out the user                                            | 204            | 400          |                                              |
+| `GET`      | `/venues`                           | Shows venue's view.                                          |                |              |                                              |
+| `GET`      | `/venues/:id`                       | Shows particular venue's details.                            |                |              | {id}                                         |
+| `POST`     | `/venues/:id`                       | Book venue. Add booking                                      | 200            | 404          | {id}                                         |
 
 <br>
 
