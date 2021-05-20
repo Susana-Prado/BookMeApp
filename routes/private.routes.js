@@ -7,18 +7,23 @@ const uploader = require('../configs/cloudinary.config');
 const passport = require('passport');
 const { isLoggedIn } = require('../configs/middlewares/auth');
 
-
-router.get('/profile-promoter',  (req, res) => {
+router.get('/profile-promoter', (req, res) => {
   Promoter.findById({ _id: req.user.id })
-  .populate('bookings')
-  .then((user) => {   
-    res.status(200).json(user);
-  });
+    .populate({
+      path: 'bookings',
+      populate: [{ path: 'venue' }, { path: 'promoter' }],
+    })
+    .then((user) => {
+      res.status(200).json(user);
+    });
 });
 
 router.get('/profile-venue', (req, res) => {
   Venue.findById({ _id: req.user.id })
-    .populate('bookings')
+    .populate({
+      path: 'bookings',
+      populate: [{ path: 'venue' }, { path: 'promoter' }],
+    })
     .then((user) => {
       res.status(200).json(user);
     });
