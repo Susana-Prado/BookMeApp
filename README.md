@@ -1,9 +1,5 @@
 # M3 - BookMeApp
-<<<<<<< HEAD
-=======
 
->>>>>>> 774b883a4d87372de9325c950d9c95f10fccdf89
-<br>
 
 ## Description
 
